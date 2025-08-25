@@ -35,22 +35,36 @@ class ImaginationWebsite {
     }
 
     async loadGroupInfo() {
-        // Try CORS proxy first, fallback to mock data
+        // Use RoProxy - a dedicated Roblox API proxy service
         try {
-            const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(`https://groups.roblox.com/v1/groups/${this.groupId}`)}`;
+            const response = await fetch(`https://roproxy.com/groups/v1/groups/${this.groupId}`);
+            const groupData = await response.json();
 
-            const response = await fetch(proxyUrl);
-            const data = await response.json();
-
-            if (data.contents) {
-                const groupData = JSON.parse(data.contents);
-                document.getElementById('members-count').textContent = this.formatNumber(groupData.memberCount || 0);
+            if (groupData && groupData.memberCount !== undefined) {
+                document.getElementById('members-count').textContent = this.formatNumber(groupData.memberCount);
             } else {
-                throw new Error('Invalid proxy response');
+                throw new Error('Invalid group data');
             }
         } catch (error) {
-            console.log('Proxy failed, using mock data:', error);
-            // Fallback to mock data
+            console.log('RoProxy failed, trying alternative proxy:', error);
+            await this.tryAlternativeProxy();
+        }
+    }
+
+    async tryAlternativeProxy() {
+        try {
+            // Alternative proxy service
+            const response = await fetch(`https://api.roproxy.com/groups/v1/groups/${this.groupId}`);
+            const groupData = await response.json();
+
+            if (groupData && groupData.memberCount !== undefined) {
+                document.getElementById('members-count').textContent = this.formatNumber(groupData.memberCount);
+            } else {
+                throw new Error('Invalid group data');
+            }
+        } catch (error) {
+            console.log('Alternative proxy failed, using mock data:', error);
+            // Final fallback to mock data
             await new Promise(resolve => setTimeout(resolve, 500));
             const mockData = { memberCount: 15420 };
             document.getElementById('members-count').textContent = this.formatNumber(mockData.memberCount);
@@ -58,39 +72,60 @@ class ImaginationWebsite {
     }
 
     async loadGames() {
-        // Try CORS proxy first, fallback to mock data
+        // Use RoProxy for games data
         try {
-            const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(`https://games.roblox.com/v2/groups/${this.groupId}/games?limit=20`)}`;
-
-            const response = await fetch(proxyUrl);
-            const data = await response.json();
+            const response = await fetch(`https://roproxy.com/games/v2/groups/${this.groupId}/games?limit=20`);
+            const gamesData = await response.json();
 
             const gamesContainer = document.getElementById('games-container');
             gamesContainer.innerHTML = '';
 
-            if (data.contents) {
-                const gamesData = JSON.parse(data.contents);
+            if (gamesData.data && gamesData.data.length > 0) {
+                document.getElementById('games-count').textContent = gamesData.data.length;
 
-                if (gamesData.data && gamesData.data.length > 0) {
-                    document.getElementById('games-count').textContent = gamesData.data.length;
-
-                    let totalVisits = 0;
-                    for (const game of gamesData.data) {
-                        const gameCard = await this.createGameCard(game);
-                        gamesContainer.appendChild(gameCard);
-                        totalVisits += game.placeVisits || 0;
-                    }
-
-                    document.getElementById('visits-count').textContent = this.formatNumber(totalVisits);
-                } else {
-                    throw new Error('No games found');
+                let totalVisits = 0;
+                for (const game of gamesData.data) {
+                    const gameCard = await this.createGameCard(game);
+                    gamesContainer.appendChild(gameCard);
+                    totalVisits += game.placeVisits || 0;
                 }
+
+                document.getElementById('visits-count').textContent = this.formatNumber(totalVisits);
             } else {
-                throw new Error('Invalid proxy response');
+                throw new Error('No games found');
             }
         } catch (error) {
-            console.log('Proxy failed, using mock data:', error);
-            // Fallback to mock data
+            console.log('RoProxy failed, trying alternative proxy:', error);
+            await this.tryAlternativeGamesProxy();
+        }
+    }
+
+    async tryAlternativeGamesProxy() {
+        try {
+            // Alternative proxy service
+            const response = await fetch(`https://api.roproxy.com/games/v2/groups/${this.groupId}/games?limit=20`);
+            const gamesData = await response.json();
+
+            const gamesContainer = document.getElementById('games-container');
+            gamesContainer.innerHTML = '';
+
+            if (gamesData.data && gamesData.data.length > 0) {
+                document.getElementById('games-count').textContent = gamesData.data.length;
+
+                let totalVisits = 0;
+                for (const game of gamesData.data) {
+                    const gameCard = await this.createGameCard(game);
+                    gamesContainer.appendChild(gameCard);
+                    totalVisits += game.placeVisits || 0;
+                }
+
+                document.getElementById('visits-count').textContent = this.formatNumber(totalVisits);
+            } else {
+                throw new Error('No games found');
+            }
+        } catch (error) {
+            console.log('Alternative proxy failed, using mock data:', error);
+            // Final fallback to mock data
             await new Promise(resolve => setTimeout(resolve, 800));
 
             const gamesContainer = document.getElementById('games-container');
