@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Imagination - Roblox Group</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0a0a0a;
+            color: #ffffff;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Rainbow gradient animations */
+        @keyframes rainbow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .rainbow-gradient {
+            background: linear-gradient(-45deg, #ff0080, #ff8c00, #40e0d0, #9370db, #00ff7f, #ff1493);
+            background-size: 400% 400%;
+            animation: rainbow 8s ease infinite;
+        }
+
+        .rainbow-text {
+            background: linear-gradient(-45deg, #ff0080, #ff8c00, #40e0d0, #9370db, #00ff7f, #ff1493);
+            background-size: 400% 400%;
+            animation: rainbow 8s ease infinite;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Header -- CORRECTED STYLES START HERE */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            z-index: 1000;
+            padding: 1rem 0;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center; /* Changed for better vertical alignment */
+            padding: 0 2rem;
+        }
+
+        .logo-link {
+            display: flex; /* Makes the link a flex container */
+            align-items: center; /* Vertically centers the image and text */
+            gap: 0.75rem; /* Adds space between image and text */
+            text-decoration: none; /* Removes underline from the link */
+        }
+
+        .logo-image {
+            width: 60px; /* Adjusted size slightly for better balance */
+            height: 60px;
+            border-radius: 8px;
+        }
+
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+        /* -- CORRECTED STYLES END HERE */
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        nav a {
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        nav a:hover {
+            color: #ff0080;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #ff0080, #40e0d0);
+            transition: width 0.3s ease;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            background: radial-gradient(circle at 50% 50%, rgba(255, 0, 128, 0.1) 0%, rgba(10, 10, 10, 1) 70%);
+        }
+
+        .hero-content {
+            text-align: center;
+            max-width: 800px;
+            padding: 0 2rem;
+            margin-top: 80px;
+        }
+
+        .hero-title {
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 800;
+            margin-bottom: 1rem;
+            line-height: 1.1;
+        }
+
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: #b0b0b0;
+            margin-bottom: 3rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 4rem;
+        }
+
+        .cta-button {
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .primary-btn {
+            background: linear-gradient(-45deg, #ff0080, #ff8c00, #40e0d0, #9370db);
+            background-size: 400% 400%;
+            animation: rainbow 8s ease infinite;
+            color: #ffffff;
+        }
+
+        .primary-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(255, 0, 128, 0.3);
+        }
+
+        .secondary-btn {
+            background: transparent;
+            color: #ffffff;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .secondary-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: #ff0080;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-top: 4rem;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .stat-number {
+            display: block;
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: #b0b0b0;
+            font-size: 0.9rem;
+        }
+
+        /* Content Sections */
+        .content-section {
+            padding: 6rem 0;
+            position: relative;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-header h2 {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+
+        .section-header p {
+            font-size: 1.2rem;
+            color: #b0b0b0;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255, 0, 128, 0.3);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        /* About Section */
+        .about-section {
+            background: linear-gradient(135deg, rgba(255, 0, 128, 0.05) 0%, rgba(64, 224, 208, 0.05) 100%);
+        }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .about-content h2 {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .about-content p {
+            margin-bottom: 1.5rem;
+            color: #d0d0d0;
+            font-size: 1.1rem;
+        }
+
+        .about-stats {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .stat-box {
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            border-left: 4px solid;
+            border-image: linear-gradient(45deg, #ff0080, #40e0d0) 1;
+        }
+
+        .stat-box h3 {
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        /* Footer */
+        footer {
+            background: #050505;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 4rem 0 2rem;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-section h3,
+        .footer-section h4 {
+            margin-bottom: 1rem;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-section a {
+            color: #b0b0b0;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-section a:hover {
+            color: #ff0080;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #808080;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            nav ul {
+                gap: 1rem;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .about-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <a href="/" class="logo-link">
+                <img src="logo.png" alt="Imagination Logo" class="logo-image">
+                <span class="logo-text rainbow-text">Imagination</span>
+            </a>
+            <nav>
+                <ul>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="#games">Our Games</a></li>
+                    <li><a href="#events">Events</a></li>
+                    <li><a href="#merchandise">Merchandise</a></li>
+                    <li><a href="#about">About Us</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="hero-section">
+        <div class="hero-content">
+            <h1 class="hero-title rainbow-text">Welcome to Imagination</h1>
+            <p class="hero-subtitle">Imagination, The Best Nation.</p>
+            <div class="hero-buttons">
+                <a href="https://www.roblox.com/communities/32858884/Imagination#!/about" target="_blank" class="cta-button primary-btn">Join Our Roblox Group</a>
+                <a href="#games" class="cta-button secondary-btn">Explore Games</a>
+            </div>
+            
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <span id="games-count" class="stat-number rainbow-text">25+</span>
+                    <span class="stat-label">Games Created</span>
+                </div>
+                <div class="stat-item">
+                    <span id="members-count" class="stat-number rainbow-text">10K+</span>
+                    <span class="stat-label">Community Members</span>
+                </div>
+                <div class="stat-item">
+                    <span id="visits-count" class="stat-number rainbow-text">1M+</span>
+                    <span class="stat-label">Total Visits</span>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <section id="games" class="content-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="rainbow-text">Our Top Games</h2>
+                <p>Here are some of our top games</p>
+            </div>
+            <div id="games-container" class="grid-container">
+                <div class="card">
+                    <h3>Game Title 1</h3>
+                    <p>Experience thrilling adventures in this amazing game world.</p>
+                </div>
+                <div class="card">
+                    <h3>Game Title 2</h3>
+                    <p>Join millions of players in this epic multiplayer experience.</p>
+                </div>
+                <div class="card">
+                    <h3>Game Title 3</h3>
+                    <p>Create, build, and explore in this creative sandbox game.</p>
+                </div>
+            </div>
+            <div class="section-footer" style="text-align: center;">
+                <a href="https://www.roblox.com/communities/32858884/Imagination#!/about" target="_blank" class="cta-button primary-btn">View All Games</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="events" class="content-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="rainbow-text">Upcoming Events</h2>
+                <p>Join us for exciting community events</p>
+            </div>
+            <div id="events-container" class="grid-container">
+                <div class="card">
+                    <h3>Community Tournament</h3>
+                    <p>Compete with other players in our monthly tournament series.</p>
+                </div>
+                <div class="card">
+                    <h3>Game Launch Event</h3>
+                    <p>Be the first to experience our latest game release.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="merchandise" class="content-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="rainbow-text">Exclusive Merchandise</h2>
+                <p>Show your Imagination pride with our official merchandise</p>
+            </div>
+            <div id="merchandise-container" class="grid-container">
+                <div class="card">
+                    <h3>Official T-Shirts</h3>
+                    <p>Comfortable and stylish shirts featuring our iconic designs.</p>
+                </div>
+                <div class="card">
+                    <h3>Gaming Accessories</h3>
+                    <p>Premium accessories to enhance your gaming experience.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="content-section about-section">
+        <div class="container">
+            <div class="about-grid">
+                <div class="about-content">
+                    <h2 class="rainbow-text">About Imagination</h2>
+                    <p>Imagination is a creative Roblox community dedicated to building amazing experiences, hosting exciting events, and creating unique merchandise for our members.</p>
+                    <p>Our games have been played millions of times, attracting thousands of monthly active users across our portfolio. We've had the privilege of working on some of the top ROBLOX games, gaining invaluable insights along the way.</p>
+                    <p>Join us in exploring the limitless possibilities of imagination within the Roblox universe!</p>
+                </div>
+                <div class="about-stats">
+                    <div class="stat-box">
+                        <h3 class="rainbow-text">Community Driven</h3>
+                        <p>Built by passionate creators for the Roblox community</p>
+                    </div>
+                    <div class="stat-box">
+                        <h3 class="rainbow-text">Innovative Games</h3>
+                        <p>Creating unique experiences that push creative boundaries</p>
+                    </div>
+                    <div class="stat-box">
+                        <h3 class="rainbow-text">Active Events</h3>
+                        <p>Regular community events and competitions</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-section">
+                    <h3 class="rainbow-text">Imagination</h3>
+                    <p>Creative Roblox community building amazing experiences.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#games">Our Games</a></li>
+                        <li><a href="#events">Events</a></li>
+                        <li><a href="#merchandise">Merchandise</a></li>
+                        <li><a href="#about">About Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Community</h4>
+                    <ul>
+                        <li><a href="https://www.roblox.com/communities/32858884/Imagination#!/about" target="_blank">Roblox Group</a></li>
+                        <li><a href="#contact">Contact Us</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Imagination. All rights reserved.</p>
+                <p>Last updated: <span id="last-updated">December 2024</span></p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Imagination Roblox Group Website Script
+        class ImaginationWebsite {
+            constructor() {
+                this.groupId = '32858884';
+                this.robloxApiBase = 'https://games.roblox.com/v2';
+                this.thumbnailsApi = 'https://thumbnails.roblox.com/v1';
+                this.groupsApi = 'https://groups.roblox.com/v1';
+                this.economyApi = 'https://economy.roblox.com/v1';
+                this.init();
+            }
+
+            init() {
+                this.showLoading();
+                this.loadGroupInfo();
+                this.loadGames();
+                this.loadEvents();
+                this.loadMerchandise();
+                this.setupAutoUpdate();
+                this.updateLastUpdated();
+            }
+
+            showLoading() {
+                const containers = ['games-container', 'events-container', 'merchandise-container'];
+                containers.forEach(containerId => {
+                    const container = document.getElementById(containerId);
+                    if (container) {
+                        container.innerHTML = `
+                            <div class="card" style="text-align: center; grid-column: 1 / -1;">
+                                <div style="display: inline-block; width: 40px; height: 40px; border: 3px solid rgba(255,255,255,0.1); border-top: 3px solid #ff0080; border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 1rem;"></div>
+                                <p>Loading content...</p>
+                            </div>
+                        `;
+                    }
+                });
+            }
+
+            async loadGroupInfo() {
+                try {
+                    const response = await fetch(`${this.groupsApi}/groups/${this.groupId}`);
+                    const data = await response.json();
+
+                    if (data) {
+                        document.getElementById('members-count').textContent = this.formatNumber(data.memberCount || 0);
+                    }
+                } catch (error) {
+                    console.error('Error loading group info:', error);
+                }
+            }
+
+            async loadGames() {
+                try {
+                    const response = await fetch(`${this.robloxApiBase}/groups/${this.groupId}/games?limit=20`);
+                    const data = await response.json();
+
+                    const gamesContainer = document.getElementById('games-container');
+                    gamesContainer.innerHTML = '';
+
+                    if (data.data && data.data.length > 0) {
+                        document.getElementById('games-count').textContent = data.data.length;
+
+                        let totalVisits = 0;
+
+                        for (const game of data.data) {
+                            const gameCard = await this.createGameCard(game);
+                            gamesContainer.appendChild(gameCard);
+                            totalVisits += game.placeVisits || 0;
+                        }
+
+                        document.getElementById('visits-count').textContent = this.formatNumber(totalVisits);
+                    } else {
+                        gamesContainer.innerHTML = '<div class="card" style="text-align: center; grid-column: 1 / -1;"><p>No games found.</p></div>';
+                        document.getElementById('games-count').textContent = '0';
+                        document.getElementById('visits-count').textContent = '0';
+                    }
+                } catch (error) {
+                    console.error('Error loading games:', error);
+                    document.getElementById('games-container').innerHTML = `
+                        <div class="card" style="text-align: center; grid-column: 1 / -1;">
+                            <p>Unable to load games at this time. Please try again later.</p>
+                        </div>
+                    `;
+                }
+            }
+
+            async createGameCard(game) {
+                const card = document.createElement('div');
+                card.className = 'card';
+
+                const thumbnailUrl = await this.getGameThumbnail(game.id);
+                const priceInfo = await this.getGamePrice(game.id);
+                const description = this.truncateText(game.description || 'An amazing game created by Imagination!', 100);
+
+                card.innerHTML = `
+                    <img src="${thumbnailUrl}" alt="${game.name}" style="width: 100%; height: 200px; object-fit: cover; border-radius: 15px; margin-bottom: 1rem;" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMzAwIiBoZWlnaHQ9IjIwMCIgZmlsbD0iIzMzMzMzMyIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjNlbSI+UGxhY2Vob2xkZXI8L3RleHQ+PC9zdmc+'">
+                    <h3 style="margin-bottom: 0.5rem; color: #ffffff;">${this.escapeHtml(game.name)}</h3>
+                    <p style="color: #d0d0d0; margin-bottom: 1rem;">${this.escapeHtml(description)}</p>
+                    <div style="color: #b0b0b0; font-size: 0.9rem; margin-bottom: 0.5rem;">👥 ${this.formatNumber(game.placeVisits || 0)} visits</div>
+                    ${priceInfo ? `<div style="background: rgba(255,255,255,0.1); color: #ffffff; padding: 0.5rem; border-radius: 10px; margin-bottom: 1rem; font-size: 0.9rem;">${priceInfo}</div>` : ''}
+                    <a href="https://www.roblox.com/games/${game.id}" target="_blank" class="cta-button primary-btn" style="display: inline-block; padding: 0.75rem 1.5rem; border-radius: 25px; text-decoration: none; font-weight: 600; font-size: 0.9rem;">Play Game</a>
+                `;
+
+                return card;
+            }
+
+            async getGameThumbnail(gameId) {
+                try {
+                    const response = await fetch(`${this.thumbnailsApi}/games/icons?gameIds=${gameId}&returnPolicy=PlaceHolder&size=512x512&format=Png&isCircular=false`);
+                    const data = await response.json();
+                    return data.data[0]?.imageUrl || this.createPlaceholderImage('Game Image');
+                } catch (error) {
+                    console.error('Error fetching thumbnail:', error);
+                    return this.createPlaceholderImage('Game Image');
+                }
+            }
+
+            async getGamePrice(gameId) {
+                try {
+                    const response = await fetch(`${this.economyApi}/games/${gameId}/game-passes`);
+                    const data = await response.json();
+
+                    if (data.data && data.data.length > 0) {
+                        const pass = data.data[0];
+                        if (pass.price) {
+                            return `💎 ${this.formatNumber(pass.price)} Robux`;
+                        }
+                    }
+
+                    const gameResponse = await fetch(`${this.robloxApiBase}/games/${gameId}`);
+                    const gameData = await gameResponse.json();
+
+                    if (gameData.price) {
+                        return `💎 ${this.formatNumber(gameData.price)} Robux`;
+                    }
+
+                    return null;
+                } catch (error) {
+                    console.error('Error fetching game price:', error);
+                    return null;
+                }
+            }
+
+            async loadEvents() {
+                const eventsContainer = document.getElementById('events-container');
+                eventsContainer.innerHTML = '';
+
+                const events = [
+                    {
+                        title: "Summer Building Contest",
+                        date: "2024-07-15",
+                        description: "Show off your building skills in our summer contest! Create amazing structures and win exclusive rewards.",
+                        image: this.createPlaceholderImage("Building Contest"),
+                        type: "Contest"
+                    },
+                    {
+                        title: "Community Meetup",
+                        date: "2024-07-20",
+                        description: "Join us for a fun community meetup event. Meet other members and participate in mini-games!",
+                        image: this.createPlaceholderImage("Community Meetup"),
+                        type: "Social"
+                    },
+                    {
+                        title: "Game Development Workshop",
+                        date: "2024-07-25",
+                        description: "Learn advanced game development techniques from our experienced developers.",
+                        image: this.createPlaceholderImage("Workshop"),
+                        type: "Educational"
+                    }
+                ];
+
+                events.forEach(event => {
+                    const eventCard = this.createEventCard(event);
+                    eventsContainer.appendChild(eventCard);
+                });
+            }
+
+            createEventCard(event) {
+                const card = document.createElement('div');
+                card.className = 'card';
+
+                const eventDate = new Date(event.date);
+                const formattedDate = eventDate.toLocaleDateString('en-US', {
+                    weekday: 'long',
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                });
+
+                card.innerHTML = `
+                    <img src="${event.image}" alt="${event.title}" style="width: 100%; height: 200px; object-fit: cover; border-radius: 15px; margin-bottom: 1rem;" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMzAwIiBoZWlnaHQ9IjIwMCIgZmlsbD0iIzMzMzMzMyIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjNlbSI+RXZlbnQ8L3RleHQ+PC9zdmc+'">
+                    <h3 style="margin-bottom: 0.5rem; color: #ffffff;">${this.escapeHtml(event.title)}</h3>
+                    <p style="color: #d0d0d0; margin-bottom: 1rem;">${this.escapeHtml(event.description)}</p>
+                    <div style="background: rgba(255,255,255,0.1); color: #ffffff; padding: 0.5rem; border-radius: 10px; margin-bottom: 0.5rem; font-size: 0.9rem;">📅 ${formattedDate}</div>
+                    <div style="color: #b0b0b0; font-size: 0.9rem; margin-bottom: 1rem;">🏷️ ${event.type}</div>
+                    <a href="#" class="cta-button secondary-btn" style="display: inline-block; padding: 0.75rem 1.5rem; border-radius: 25px; text-decoration: none; font-weight: 600; font-size: 0.9rem;">Learn More</a>
+                `;
+
+                return card;
+            }
+
+            async loadMerchandise() {
+                const merchandiseContainer = document.getElementById('merchandise-container');
+                merchandiseContainer.innerHTML = '';
+
+                const merchandise = [
+                    {
+                        title: "Imagination T-Shirt",
+                        price: "299",
+                        description: "Show your Imagination pride with our official t-shirt! High-quality fabric with our logo.",
+                        image: this.createPlaceholderImage("T-Shirt"),
+                        category: "Clothing"
+                    },
+                    {
+                        title: "Logo Hoodie",
+                        price: "599",
+                        description: "Stay warm and stylish with our premium logo hoodie. Perfect for gaming sessions!",
+                        image: this.createPlaceholderImage("Hoodie"),
+                        category: "Clothing"
+                    },
+                    {
+                        title: "Gaming Mouse Pad",
+                        price: "199",
+                        description: "Enhance your gaming setup with our custom mouse pad featuring the Imagination logo.",
+                        image: this.createPlaceholderImage("Mouse Pad"),
+                        category: "Accessories"
+                    },
+                    {
+                        title: "Developer Badge",
+                        price: "99",
+                        description: "Show off your developer status with this exclusive Imagination developer badge.",
+                        image: this.createPlaceholderImage("Badge"),
+                        category: "Digital"
+                    }
+                ];
+
+                merchandise.forEach(item => {
+                    const merchCard = this.createMerchandiseCard(item);
+                    merchandiseContainer.appendChild(merchCard);
+                });
+            }
+
+            createMerchandiseCard(item) {
+                const card = document.createElement('div');
+                card.className = 'card';
+
+                card.innerHTML = `
+                    <img src="${item.image}" alt="${item.title}" style="width: 100%; height: 200px; object-fit: cover; border-radius: 15px; margin-bottom: 1rem;" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMzAwIiBoZWlnaHQ9IjIwMCIgZmlsbD0iIzMzMzMzMyIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjNlbSI+TWVyY2g8L3RleHQ+PC9zdmc+'">
+                    <h3 style="margin-bottom: 0.5rem; color: #ffffff;">${this.escapeHtml(item.title)}</h3>
+                    <p style="color: #d0d0d0; margin-bottom: 1rem;">${this.escapeHtml(item.description)}</p>
+                    <div style="background: rgba(255,255,255,0.1); color: #ffffff; padding: 0.5rem; border-radius: 10px; margin-bottom: 0.5rem; font-size: 0.9rem;">💎 ${this.formatNumber(item.price)} Robux</div>
+                    <div style="color: #b0b0b0; font-size: 0.9rem; margin-bottom: 1rem;">🏷️ ${item.category}</div>
+                    <a href="#" class="cta-button primary-btn" style="display: inline-block; padding: 0.75rem 1.5rem; border-radius: 25px; text-decoration: none; font-weight: 600; font-size: 0.9rem;">Buy Now</a>
+                `;
+
+                return card;
+            }
+
+            setupAutoUpdate() {
+                setInterval(() => {
+                    this.loadGames();
+                    this.updateLastUpdated();
+                }, 5 * 60 * 1000);
+
+                setInterval(() => {
+                    this.loadEvents();
+                }, 60 * 60 * 1000);
+
+                setInterval(() => {
+                    this.loadMerchandise();
+                }, 24 * 60 * 60 * 1000);
+            }
+
+            updateLastUpdated() {
+                const now = new Date();
+                const formatted = now.toLocaleString();
+                document.getElementById('last-updated').textContent = formatted;
+            }
+
+            formatNumber(num) {
+                if (num >= 1000000) {
+                    return (num / 1000000).toFixed(1) + 'M';
+                } else if (num >= 1000) {
+                    return (num / 1000).toFixed(1) + 'K';
+                }
+                return num.toString();
+            }
+
+            truncateText(text, maxLength) {
+                if (text.length <= maxLength) return text;
+                return text.substring(0, maxLength) + '...';
+            }
+
+            escapeHtml(text) {
+                const div = document.createElement('div');
+                div.textContent = text;
+                return div.innerHTML;
+            }
+
+            createPlaceholderImage(text) {
+                const canvas = document.createElement('canvas');
+                canvas.width = 300;
+                canvas.height = 200;
+                const ctx = canvas.getContext('2d');
+
+                const gradient = ctx.createLinearGradient(0, 0, 300, 200);
+                gradient.addColorStop(0, '#ff0080');
+                gradient.addColorStop(0.5, '#40e0d0');
+                gradient.addColorStop(1, '#9370db');
+                ctx.fillStyle = gradient;
+                ctx.fillRect(0, 0, 300, 200);
+
+                ctx.fillStyle = 'white';
+                ctx.font = '16px Arial';
+                ctx.textAlign = 'center';
+                ctx.fillText(text, 150, 100);
+
+                return canvas.toDataURL();
+            }
+        }
+
+        // Initialize the website when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            new ImaginationWebsite();
+        });
+
+        // Smooth scrolling for navigation
+        document.querySelectorAll('nav a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add spin animation for loading
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes spin {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
