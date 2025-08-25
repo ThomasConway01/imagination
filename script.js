@@ -35,33 +35,67 @@ class ImaginationWebsite {
     }
 
     async loadGroupInfo() {
-        // Use mock data since Roblox API doesn't support CORS
+        // Try CORS proxy first, fallback to mock data
         try {
-            // Simulate API delay
-            await new Promise(resolve => setTimeout(resolve, 500));
+            const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(`https://groups.roblox.com/v1/groups/${this.groupId}`)}`;
 
-            // Mock data for demonstration
-            const mockData = {
-                memberCount: 15420
-            };
+            const response = await fetch(proxyUrl);
+            const data = await response.json();
 
-            document.getElementById('members-count').textContent = this.formatNumber(mockData.memberCount);
+            if (data.contents) {
+                const groupData = JSON.parse(data.contents);
+                document.getElementById('members-count').textContent = this.formatNumber(groupData.memberCount || 0);
+            } else {
+                throw new Error('Invalid proxy response');
+            }
         } catch (error) {
-            console.error('Error loading group info:', error);
-            this.showError('members-count', 'Failed to load member count');
+            console.log('Proxy failed, using mock data:', error);
+            // Fallback to mock data
+            await new Promise(resolve => setTimeout(resolve, 500));
+            const mockData = { memberCount: 15420 };
+            document.getElementById('members-count').textContent = this.formatNumber(mockData.memberCount);
         }
     }
 
     async loadGames() {
-        // Use mock data since Roblox API doesn't support CORS
+        // Try CORS proxy first, fallback to mock data
         try {
-            // Simulate API delay
+            const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(`https://games.roblox.com/v2/groups/${this.groupId}/games?limit=20`)}`;
+
+            const response = await fetch(proxyUrl);
+            const data = await response.json();
+
+            const gamesContainer = document.getElementById('games-container');
+            gamesContainer.innerHTML = '';
+
+            if (data.contents) {
+                const gamesData = JSON.parse(data.contents);
+
+                if (gamesData.data && gamesData.data.length > 0) {
+                    document.getElementById('games-count').textContent = gamesData.data.length;
+
+                    let totalVisits = 0;
+                    for (const game of gamesData.data) {
+                        const gameCard = await this.createGameCard(game);
+                        gamesContainer.appendChild(gameCard);
+                        totalVisits += game.placeVisits || 0;
+                    }
+
+                    document.getElementById('visits-count').textContent = this.formatNumber(totalVisits);
+                } else {
+                    throw new Error('No games found');
+                }
+            } else {
+                throw new Error('Invalid proxy response');
+            }
+        } catch (error) {
+            console.log('Proxy failed, using mock data:', error);
+            // Fallback to mock data
             await new Promise(resolve => setTimeout(resolve, 800));
 
             const gamesContainer = document.getElementById('games-container');
             gamesContainer.innerHTML = '';
 
-            // Mock games data for demonstration
             const mockGames = [
                 {
                     id: 1,
@@ -96,11 +130,6 @@ class ImaginationWebsite {
             }
 
             document.getElementById('visits-count').textContent = this.formatNumber(totalVisits);
-        } catch (error) {
-            console.error('Error loading games:', error);
-            this.showError('games-container', 'Failed to load games');
-            this.showError('games-count', '0');
-            this.showError('visits-count', '0');
         }
     }
 
